@@ -10,6 +10,7 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import AddressForm from "./AddressForm";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { sendForm } from "../service";
 
 function Copyright() {
   return (
@@ -31,7 +32,7 @@ export type Inputs = {
 
 export default function Checkout() {
   const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+  const onSubmit: SubmitHandler<Inputs> = (data) => sendForm(data).then(data => console.log(data))
 
   return (
     <React.Fragment>
