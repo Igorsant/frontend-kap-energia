@@ -26,8 +26,8 @@ function Copyright() {
 }
 
 export type Inputs = {
-  watts: string;
-  value2: string;
+  kwp: string;
+  name: string;
 };
 
 export default function Checkout() {
@@ -69,7 +69,7 @@ export default function Checkout() {
                   sx={{ mt: 3, ml: 1 }}
                   type="submit"
                 >
-                  Submit
+                  Enviar
                 </Button>
               </Box>
             </React.Fragment>
