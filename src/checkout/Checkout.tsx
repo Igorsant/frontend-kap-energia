@@ -26,13 +26,24 @@ function Copyright() {
 }
 
 export type Inputs = {
-  kwp: string;
   name: string;
+  kwp: number;
+  cep: number;
+  roof: "fibrocimento" | "minitrilho" | "laje";
+  classification: "monofasico" | "trifasico";
+  paymentMethod: "cartao" | "dinheiro";
 };
 
 export default function Checkout() {
-  const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => sendForm(data).then(data => console.log(data))
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    sendForm(data).then((data) => console.log(data));
+    // console.log(data);
+  };
 
   return (
     <React.Fragment>
@@ -61,18 +72,12 @@ export default function Checkout() {
             <Typography component="h1" variant="h4" align="center">
               Cliente
             </Typography>
-            <React.Fragment>
-              <AddressForm register={register} />
-              <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <Button
-                  variant="contained"
-                  sx={{ mt: 3, ml: 1 }}
-                  type="submit"
-                >
-                  Enviar
-                </Button>
-              </Box>
-            </React.Fragment>
+            <AddressForm register={register} errors={errors} />
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Button variant="contained" sx={{ mt: 3, ml: 1 }} type="submit">
+                Enviar
+              </Button>
+            </Box>
           </Paper>
           <Copyright />
         </Container>
