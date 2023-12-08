@@ -1,4 +1,3 @@
-import * as React from "react";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
@@ -33,13 +32,13 @@ export default function AddressForm(props: Props) {
       <Grid item xs={12}>
         <TextField
           required
-          error={errors.kwp && true}
-          helperText={errors.kwp && "kwp invalido"}
-          {...register("kwp", {
+          error={errors.watt && true}
+          helperText={errors.watt && "Watt invalido"}
+          {...register("watt", {
             required: true,
-            pattern: /^[0-9]+,?[0-9]+$/g,
+            pattern: /^[0-9]+$/g,
           })}
-          label="kwp"
+          label="Watt"
           fullWidth
           variant="standard"
         />
@@ -62,25 +61,25 @@ export default function AddressForm(props: Props) {
           <FormLabel id="telhado">Tipo de telhado</FormLabel>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue="fibrocimento"
+            defaultValue="PRATYC - Telha fibrocimento"
             name="telhado-radio-buttons"
             style={{ paddingLeft: "20px" }}
           >
             <FormControlLabel
               {...register("roof")}
-              value="fibrocimento"
+              value="PRATYC - Telha fibrocimento"
               control={<Radio />}
               label="Fibrocimento"
             />
             <FormControlLabel
               {...register("roof")}
-              value="minitrilho"
+              value="PRATYC - Metálico mini-trilho baixo"
               control={<Radio />}
               label="Mini trilho baixo"
             />
             <FormControlLabel
               {...register("roof")}
-              value="laje"
+              value="PRATYC - Laje"
               control={<Radio />}
               label="Laje"
             />
@@ -108,14 +107,14 @@ export default function AddressForm(props: Props) {
           <InputLabel id="label">Forma de pagamento</InputLabel>
           <Select
             required
-            labelId="payment-labelid"
-            id="payment"
+            labelId="cartaoid"
+            id="cartao"
             label="Forma de pagamento"
-            {...register("paymentMethod", { required: true })}
-            defaultValue="cartao"
+            {...register("cartao", { required: true })}
+            defaultValue="SIM"
           >
-            <MenuItem value="cartao">Cartão</MenuItem>
-            <MenuItem value="dinheiro">Dinheiro</MenuItem>
+            <MenuItem value="SIM">Cartão</MenuItem>
+            <MenuItem value="NAO">Dinheiro</MenuItem>
           </Select>
         </FormControl>
       </Grid>

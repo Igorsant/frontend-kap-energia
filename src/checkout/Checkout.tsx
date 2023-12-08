@@ -27,11 +27,11 @@ function Copyright() {
 
 export type Inputs = {
   name: string;
-  kwp: number;
+  watt: number;
   cep: number;
-  roof: "fibrocimento" | "minitrilho" | "laje";
+  roof: "PRATYC - Telha fibrocimento" | "PRATYC - Metálico mini-trilho baixo" | "PRATYC - Laje";
   classification: "monofasico" | "trifasico";
-  paymentMethod: "cartao" | "dinheiro";
+  cartao: "SIM" | "NAO";
 };
 
 export default function Checkout() {
@@ -41,6 +41,7 @@ export default function Checkout() {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    data.watt = parseFloat((data.watt / 136.8).toFixed(2))
     sendForm(data).then((data) => console.log(data));
     // console.log(data);
   };
