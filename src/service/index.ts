@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Inputs } from "../checkout/Checkout";
 
-axios.defaults.baseURL = `http://${process.env.backendUrl}:${process.env.backendPort}`
+axios.defaults.baseURL = `http://${import.meta.env.backendUrl}:${import.meta.env.backendPort}`
 
 export const sendForm = async (inputs: Inputs) => {
   const responseGTSolar = new Promise(async (resolve, _reject) => {
