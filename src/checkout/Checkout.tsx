@@ -10,7 +10,8 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import AddressForm from "./AddressForm";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { sendForm } from "../service";
+// import { sendForm } from "../service";
+import { sendHelloWorld } from "../service";
 
 function Copyright() {
   return (
@@ -40,10 +41,11 @@ export default function Checkout() {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    data.watt = parseFloat((data.watt / 136.8).toFixed(2))
-    console.log(data)
-    sendForm().then((data) => console.log(data));
+  const onSubmit: SubmitHandler<Inputs> = (/*data*/) => {
+    // data.watt = parseFloat((data.watt / 136.8).toFixed(2))
+    // console.log(data)
+    // sendForm(data).then((data) => console.log(data));
+    console.log(sendHelloWorld())
   };
 
   return (
