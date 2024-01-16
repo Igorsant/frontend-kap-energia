@@ -21,5 +21,5 @@ axios.defaults.baseURL = `http://${import.meta.env.VITE_BACKEND_URL}`
 // }
 
 export const sendHelloWorld = () => {
-  return axios.get('/')
+  return axios.get('/').then(data => console.log(data)).catch(err => console.log(err))
 }
