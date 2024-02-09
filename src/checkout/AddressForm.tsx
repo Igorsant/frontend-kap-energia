@@ -32,9 +32,9 @@ export default function AddressForm(props: Props) {
       <Grid item xs={12}>
         <TextField
           required
-          error={errors.watt && true}
-          helperText={errors.watt && "Watt invalido"}
-          {...register("watt", {
+          error={errors.kwp && true}
+          helperText={errors.kwp && "Watt invalido"}
+          {...register("kwp", {
             required: true,
             pattern: /^[0-9]+$/g,
           })}
@@ -45,10 +45,11 @@ export default function AddressForm(props: Props) {
       </Grid>
       <Grid item xs={12}>
         <TextField
+          required
           label="CEP"
           fullWidth
           error={errors.cep && true}
-          helperText={errors.cep && "cep invalido"}
+          helperText={errors.cep && "cep invalido (apenas números)"}
           variant="standard"
           {...register("cep", {
             required: true,

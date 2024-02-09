@@ -1,17 +1,49 @@
 import axios from "axios";
 import { Inputs } from "../checkout/Checkout";
 
-axios.defaults.baseURL = `http://${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}`
+axios.defaults.baseURL = `http://localhost:5000`
 
-export const sendForm = async (inputs: Inputs) => {
-  const responseGTSolar = new Promise(async (resolve, _reject) => {
-    const data = await axios.post('/gtsolar', inputs)
-    resolve(data.data)
-  })
-  const responseSouEnergy = new Promise(async (resolve, _reject) => {
-    const data = await axios.post('/souenergy', inputs)
-    resolve(data.data)
+type SouEnergyResponse = {
+  distributor: string;
+  data: {
+    "CABO SOLAR PRETO:": string
+    "CABO SOLAR VERMELHO:": string
+    "CONECTOR MC4:": string
+    "INVERSOR:": string
+    "PAINEL FOTOVOLTAICO:": string
+    "preco:": string
+  }
+}
+
+type GTSolarResponse = {
+  distributor: string;
+  data: {}
+}
+
+export const searchSouEnergy = async (inputs: Inputs): Promise<SouEnergyResponse> => {
+  const responseSouEnergy = new Promise<SouEnergyResponse>(async (resolve, _reject) => {
+    const response = await axios.post('/souenergy', inputs)
+    resolve({
+      distributor: 'Sou Energy',
+      data: {
+        ...response.data
+      }
+    })
   })
 
-  return Promise.all([responseGTSolar, responseSouEnergy])
+  return responseSouEnergy
+}
+
+export const searchGTSolar = async (inputs: Inputs): Promise<GTSolarResponse> => {
+  const responseGTSolar = new Promise<GTSolarResponse>(async (resolve, _reject) => {
+    const response = await axios.post('/gtsolar', inputs)
+    resolve({
+      distributor: 'GT Solar',
+      data: {
+        ...response.data
+      }
+    })
+  })
+
+  return responseGTSolar
 }

@@ -10,7 +10,9 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import AddressForm from "./AddressForm";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { sendForm } from "../service";
+import { searchSouEnergy, searchGTSolar } from "../service";
+import { Grid, List, ListItem, ListItemText } from "@mui/material";
+import { useState } from "react";
 
 function Copyright() {
   return (
@@ -27,7 +29,7 @@ function Copyright() {
 
 export type Inputs = {
   name: string;
-  watt: number;
+  kwp: number;
   cep: number;
   roof: "PRATYC - Telha fibrocimento" | "PRATYC - Metálico mini-trilho baixo" | "PRATYC - Laje";
   classification: "monofasico" | "trifasico";
@@ -41,10 +43,22 @@ export default function Checkout() {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    data.watt = parseFloat((data.watt / 136.8).toFixed(2))
+    data.kwp = parseFloat((data.kwp / 136.8).toFixed(2))
     console.log(data)
-    sendForm(data).then((data) => console.log(data));
+    setCounterButton(counter => counter + 1)
+
+    searchSouEnergy(data).then((dataResponse) => {
+      setData(data => [...data, dataResponse])
+      setCounterButton(counter => counter + 1)
+    });
+
+    searchGTSolar(data).then((dataResponse) => {
+      setData(data => [...data, dataResponse])
+      setCounterButton(counter => counter + 1)
+    });
   };
+  const [data, setData] = useState<any[]>([])
+  const [counterButton, setCounterButton] = useState<number>(0);
 
   return (
     <React.Fragment>
@@ -65,7 +79,7 @@ export default function Checkout() {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+        <Container component="main" maxWidth="sm">
           <Paper
             variant="outlined"
             sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
@@ -75,13 +89,36 @@ export default function Checkout() {
             </Typography>
             <AddressForm register={register} errors={errors} />
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Button variant="contained" sx={{ mt: 3, ml: 1 }} type="submit">
+              <Button variant="contained" sx={{ mt: 3, ml: 1 }} type="submit" disabled={counterButton % 3 !== 0}>
                 Enviar
               </Button>
             </Box>
           </Paper>
-          <Copyright />
         </Container>
+        <Container maxWidth="md" sx={{ mb: 4 }}>
+          <Grid container spacing={3} margin="10">
+            {data.map(item => (
+              <Grid item xs={12} md={6}>
+                <Paper style={{ padding: '5px 10px' }} variant="outlined">
+                  <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div" align="center">
+                    {item.distributor}
+                  </Typography>
+                  <List>
+                    {Object.entries(item.data).map(info => (
+                      <ListItem>
+                        <ListItemText
+                          secondary={`${info[1]}`}
+                          primary={`${info[0]}`}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+        <Copyright />
       </form>
     </React.Fragment>
   );
