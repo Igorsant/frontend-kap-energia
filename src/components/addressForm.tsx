@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { Inputs } from "./Checkout";
+import { Inputs } from "../pages/checkout";
 import FormControl from "@mui/material/FormControl/FormControl";
 import FormLabel from "@mui/material/FormLabel/FormLabel";
 import RadioGroup from "@mui/material/RadioGroup/RadioGroup";

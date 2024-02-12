@@ -1,4 +1,3 @@
-import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -8,11 +7,11 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import AddressForm from "./AddressForm";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { searchSouEnergy, searchGTSolar } from "../service";
+import { searchSouEnergy, searchGTSolar } from "../services";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import AddressForm from "../components/addressForm";
 
 function Copyright() {
   return (
@@ -61,7 +60,7 @@ export default function Checkout() {
   const [counterButton, setCounterButton] = useState<number>(0);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <form onSubmit={handleSubmit(onSubmit)}>
         <CssBaseline />
         <AppBar
@@ -89,7 +88,7 @@ export default function Checkout() {
             </Typography>
             <AddressForm register={register} errors={errors} />
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Button variant="contained" sx={{ mt: 3, ml: 1 }} type="submit" disabled={counterButton % 3 !== 0}>
+              <Button variant="contained" sx={{ mt: 3, ml: 1 }} type="submit">
                 Enviar
               </Button>
             </Box>
@@ -120,6 +119,6 @@ export default function Checkout() {
         </Container>
         <Copyright />
       </form>
-    </React.Fragment>
+    </Fragment>
   );
 }

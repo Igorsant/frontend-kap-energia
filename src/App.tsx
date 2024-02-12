@@ -1,9 +1,24 @@
-import Checkout from "./checkout/Checkout";
+import { useRoutes } from "react-router-dom";
+import { Auth } from "./components/auth";
+import Signin from "./pages/login";
+import Checkout from "./pages/checkout";
 
 function App() {
-  return (
-    <Checkout />
-  );
+  let element = useRoutes([
+    {
+      path: "/",
+      element: <Auth />,
+      children: [
+        {
+          path: "checkout",
+          element: <Checkout />,
+        },
+      ],
+    },
+    { path: "login", element: <Signin /> },
+  ]);
+
+  return element;
 }
 
 export default App;
