@@ -2,6 +2,7 @@ import { useRoutes } from "react-router-dom";
 import { Auth } from "./components/auth";
 import Signin from "./pages/login";
 import Checkout from "./pages/checkout";
+import { AutoLogin } from "./components/autologin";
 
 function App() {
   let element = useRoutes([
@@ -15,7 +16,16 @@ function App() {
         },
       ],
     },
-    { path: "login", element: <Signin /> },
+    {
+      path: "/login",
+      element: <AutoLogin />,
+      children: [
+        {
+          path: "",
+          element: <Signin />
+        },
+      ],
+    },
   ]);
 
   return element;

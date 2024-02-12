@@ -42,7 +42,6 @@ const theme = createTheme();
 export default function SignIn() {
   const { register, handleSubmit } = useForm<LoginInputs>();
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
-    console.log(data);
     const token = sha256(`${data.username}:${data.password}`);
     authRequest(token)
       .then((_data) => {

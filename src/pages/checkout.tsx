@@ -43,7 +43,6 @@ export default function Checkout() {
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     data.kwp = parseFloat((data.kwp / 136.8).toFixed(2))
-    console.log(data)
     setCounterButton(counter => counter + 1)
 
     searchSouEnergy(data).then((dataResponse) => {
