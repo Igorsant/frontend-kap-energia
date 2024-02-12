@@ -57,7 +57,7 @@ export default function Checkout() {
     });
   };
   const [data, setData] = useState<any[]>([])
-  const [counterButton, setCounterButton] = useState<number>(0);
+  const [/*counterButton*/, setCounterButton] = useState<number>(0);
 
   return (
     <Fragment>
