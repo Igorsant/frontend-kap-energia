@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Inputs } from "../pages/checkout";
 
-axios.defaults.baseURL = `http://localhost:5000`;
+axios.defaults.baseURL = `http://${import.meta.env.VITE_BACKEND_URL}:${import.meta.env.VITE_BACKEND_PORT}`;
 
 type SouEnergyResponse = {
   distributor: string;
