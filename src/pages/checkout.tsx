@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -12,6 +11,7 @@ import { searchSouEnergy, searchGTSolar } from "../services";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import { Fragment, useState } from "react";
 import AddressForm from "../components/addressForm";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 function Copyright() {
   return (
@@ -41,23 +41,18 @@ export default function Checkout() {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    data.kwp = parseFloat((data.kwp / 136.8).toFixed(2))
-    setCounterButton(counter => counter + 1)
-
-    searchSouEnergy(data).then((dataResponse) => {
-      setData(data => [...data, dataResponse])
-      setCounterButton(counter => counter + 1)
-    });
-
-    searchGTSolar(data).then((dataResponse) => {
-      setData(data => [...data, dataResponse])
-      setCounterButton(counter => counter + 1)
-    });
-  };
   const [data, setData] = useState<any[]>([])
-  const [/*counterButton*/, setCounterButton] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    data.kwp = parseFloat((data.kwp / 136.8).toFixed(2))
+    setIsLoading(true)
+  
+    const results = await Promise.all([searchSouEnergy(data), searchGTSolar(data)])
+    setIsLoading(false)
+    setData(results)
+  };
+  
   return (
     <Fragment>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -87,9 +82,9 @@ export default function Checkout() {
             </Typography>
             <AddressForm register={register} errors={errors} />
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Button variant="contained" sx={{ mt: 3, ml: 1 }} type="submit">
+              <LoadingButton variant="contained" sx={{ mt: 3, ml: 1 }} type="submit" loading={isLoading}>
                 Enviar
-              </Button>
+              </LoadingButton>
             </Box>
           </Paper>
         </Container>

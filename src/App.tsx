@@ -22,7 +22,7 @@ function App() {
       children: [
         {
           path: "",
-          element: <Signin />
+          element: <Signin />,
         },
       ],
     },
