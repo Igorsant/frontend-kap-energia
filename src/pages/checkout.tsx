@@ -33,6 +33,7 @@ export type Inputs = {
   roof: "PRATYC - Telha fibrocimento" | "PRATYC - Metálico mini-trilho baixo" | "PRATYC - Laje";
   classification: "monofasico" | "trifasico";
   cartao: "SIM" | "NAO";
+  parcelas: number;
 };
 
 export default function Checkout() {
@@ -40,6 +41,7 @@ export default function Checkout() {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<Inputs>();
   const [data, setData] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -48,9 +50,25 @@ export default function Checkout() {
     data.kwp = parseFloat((data.kwp / 136.8).toFixed(2))
     setIsLoading(true)
   
-    const results = await Promise.all([searchSouEnergy(data), searchGTSolar(data)])
-    setIsLoading(false)
-    setData(results)
+    try{
+      const results = await Promise.all([searchSouEnergy(data), searchGTSolar(data)])
+      const propertiesToFormat = ['Cabos e Conectores Solar', 'Inversor', 'Módulo']
+      
+      for(let prop of propertiesToFormat) {
+        const term = results[1].data[prop]
+        const qtd = term.substring(term.length-2, term.length).trim()
+        
+        results[1].data[prop] = `${qtd} x `+term.substring(0, term.length-2).trim()
+      }
+      
+      setIsLoading(false)
+      setData(results)
+    } catch (error) {
+      // TODO notify user
+      setIsLoading(false)
+      console.log(error)
+    }
+    
   };
   
   return (
@@ -80,7 +98,7 @@ export default function Checkout() {
             <Typography component="h1" variant="h4" align="center">
               Cliente
             </Typography>
-            <AddressForm register={register} errors={errors} />
+            <AddressForm register={register} errors={errors} watch={watch}/>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <LoadingButton variant="contained" sx={{ mt: 3, ml: 1 }} type="submit" loading={isLoading}>
                 Enviar

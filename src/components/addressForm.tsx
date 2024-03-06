@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FieldErrors, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { Inputs } from "../pages/checkout";
 import FormControl from "@mui/material/FormControl/FormControl";
 import FormLabel from "@mui/material/FormLabel/FormLabel";
@@ -14,10 +14,20 @@ import MenuItem from "@mui/material/MenuItem/MenuItem";
 interface Props {
   register: UseFormRegister<Inputs>;
   errors: FieldErrors<Inputs>;
+  watch: UseFormWatch<Inputs>;
 }
 
+const numeroParcelas = () => {
+  const parcelas = [];
+  for (let i = 1; i <= 21; i++) {
+    parcelas.push(i);
+  }
+  return parcelas;
+};
+
 export default function AddressForm(props: Props) {
-  const { register, errors } = props;
+  const { register, errors, watch } = props;
+  const watchCartao = watch("cartao");
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -119,6 +129,25 @@ export default function AddressForm(props: Props) {
           </Select>
         </FormControl>
       </Grid>
+      {watchCartao === "SIM" && (
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel id="label">Número de parcelas</InputLabel>
+            <Select
+              required
+              labelId="numeroParcelas"
+              id="parcelas"
+              label="Forma de pagamento"
+              {...register("parcelas", { required: true })}
+              defaultValue={1}
+            >
+              {numeroParcelas().map((parcela) => (
+                <MenuItem key={parcela} value={parcela}>{parcela}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+      )}
     </Grid>
   );
 }

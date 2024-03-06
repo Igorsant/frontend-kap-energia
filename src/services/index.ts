@@ -10,7 +10,9 @@ type SouEnergyResponse = {
 
 type GTSolarResponse = {
   distributor: string;
-  data: {};
+  data: {
+    [key: string]: string
+  };
 };
 
 export const updateDefaultHeaders = (token: string) => {
