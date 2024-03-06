@@ -13,6 +13,7 @@ import { sha256 } from "js-sha256";
 import { authRequest, updateDefaultHeaders } from "../services";
 import { Navigate } from "react-router-dom";
 import { useState } from "react";
+import { NotificationAlert } from "../components/notificationAlert";
 
 function Copyright(props: any) {
   return (
@@ -48,13 +49,19 @@ export default function SignIn() {
         updateDefaultHeaders(token)
         setRedirectState(true);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        setMessage(err.message);
+        setOpen(true);
+      });
   };
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
   const [redirectState, setRedirectState] = useState(false);
 
   return !redirectState ? (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
+        <NotificationAlert open={open} setOpen={setOpen} message={message} />
         <CssBaseline />
         <Box
           sx={{

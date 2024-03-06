@@ -8,10 +8,12 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { searchSouEnergy, searchGTSolar } from "../services";
-import { Grid, List, ListItem, ListItemText } from "@mui/material";
+import { Button, Grid, List, ListItem, ListItemText } from "@mui/material";
 import { Fragment, useState } from "react";
 import AddressForm from "../components/addressForm";
 import LoadingButton from '@mui/lab/LoadingButton';
+import { NotificationAlert } from "../components/notificationAlert";
+import { AxiosError } from "axios";
 
 function Copyright() {
   return (
@@ -45,9 +47,12 @@ export default function Checkout() {
   } = useForm<Inputs>();
   const [data, setData] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('')
+  const [open, setOpen] = useState<boolean>(false)
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     data.kwp = parseFloat((data.kwp / 136.8).toFixed(2))
+    // console.log(data)
     setIsLoading(true)
   
     try{
@@ -64,9 +69,9 @@ export default function Checkout() {
       setIsLoading(false)
       setData(results)
     } catch (error) {
-      // TODO notify user
       setIsLoading(false)
-      console.log(error)
+      setMessage((error as AxiosError).message)
+      setOpen(true)
     }
     
   };
@@ -74,6 +79,7 @@ export default function Checkout() {
   return (
     <Fragment>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <NotificationAlert message={message} open={open} setOpen={setOpen}/>
         <CssBaseline />
         <AppBar
           position="absolute"
@@ -88,6 +94,11 @@ export default function Checkout() {
             <Typography variant="h6" color="inherit" noWrap>
               Kap Solar
             </Typography>
+            <Box flexGrow={1}></Box>
+            <Button onClick={() => {
+              localStorage.removeItem('auth')
+              window.location.href = '/login'
+            }}>Logout</Button>
           </Toolbar>
         </AppBar>
         <Container component="main" maxWidth="sm">

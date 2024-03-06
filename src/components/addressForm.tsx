@@ -48,7 +48,7 @@ export default function AddressForm(props: Props) {
             required: true,
             pattern: /^[0-9]+$/g,
           })}
-          label="Watt"
+          label="kWh"
           fullWidth
           variant="standard"
         />
