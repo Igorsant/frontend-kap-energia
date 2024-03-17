@@ -35,7 +35,7 @@ export type Inputs = {
   roof: "PRATYC - Telha fibrocimento" | "PRATYC - Metálico mini-trilho baixo" | "PRATYC - Laje";
   classification: "monofasico" | "trifasico";
   cartao: "SIM" | "NAO";
-  parcelas: number;
+  parcelas: string;
 };
 
 export default function Checkout() {
@@ -52,7 +52,7 @@ export default function Checkout() {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     data.kwp = parseFloat((data.kwp / 136.8).toFixed(2))
-    // console.log(data)
+    console.log(data)
     setIsLoading(true)
   
     try{
